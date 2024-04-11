@@ -12,7 +12,7 @@ object ReadersWritersPetriNet:
   export pc.modelling.SystemAnalysis.*
   export pc.utils.MSet
 
-  def petriNetRW = PetriNet[Place](
+  def pnRW = PetriNet[Place](
     MSet(Idle) ~~> MSet(ChooseAction),
     MSet(ChooseAction) ~~> MSet(ReadyToRead),
     MSet(ChooseAction) ~~> MSet(ReadyToWrite),
@@ -22,23 +22,12 @@ object ReadersWritersPetriNet:
     MSet(Writing) ~~> MSet(Idle, HasPermission)
   ).toSystem
 
-  def petriNetRWWithPriority = PetriNet[Place](
-    MSet(Idle) ~~> MSet(ChooseAction),
-    (MSet(ChooseAction) ~~> MSet(ReadyToRead)) priority 2,
-    MSet(ChooseAction) ~~> MSet(ReadyToWrite),
-    MSet(ReadyToRead, HasPermission) ~~> MSet(Reading, HasPermission),
-    MSet(Reading) ~~> MSet(Idle),
-    MSet(ReadyToWrite, HasPermission) ~~> MSet(Writing) ^^^ MSet(Reading),
-    MSet(Writing) ~~> MSet(Idle, HasPermission)
-  ).toSystem
-
   def isMutuallyExclusive(initialState: MSet[Place], depth: Int): Boolean =
-    val statesMutualExclusion: Seq[Boolean] =
-      for
-        p <- petriNetRW.paths(initialState, depth)
-        s <- p
-      yield s.diff(MSet(Reading, Writing)).size == s.size - 2 || s.diff(MSet(Writing, Writing)).size == s.size - 2
-    !statesMutualExclusion.contains(true)
+    (for
+      p <- pnRW.paths(initialState, depth)
+      s <- p
+    yield s.diff(MSet(Reading, Writing)).size != s.size - 2 && s.diff(MSet(Writing, Writing)).size != s.size - 2).reduce(_ && _)
+
   /*val paths = pnRW.paths(initialState, depth)
   !paths.exists { path =>
     path.exists { state =>
@@ -50,32 +39,22 @@ object ReadersWritersPetriNet:
   //pnRW.paths(initialState, depth).flatMap(p => p.filter(s => s.diff(MSet(Reading, Writing)).size == s.size - 2 || s.diff(MSet(Writing, Writing)).size == s.size - 2)).isEmpty
 
   def isReachable(initialState: MSet[Place], depth: Int): Boolean =
-    val allReachedStates: Seq[Place] =
-      for
-        path <- petriNetRW.paths(initialState, depth)
-        state <- path
-        place <- state.asList
-      yield place
-    allReachedStates.toSet == Place.values.toSet
+    (for
+      path <- pnRW.paths(initialState, depth)
+      state <- path
+      place <- state.asList
+    yield place).toSet == Place.values.toSet
 
-  private def maxTokenInPN(initialState: MSet[Place]): Int =
+
+  def maxTokenInPN(initialState: MSet[Place]): Int =
     if initialState.matches(MSet(HasPermission)) then initialState.size else initialState.size + 1
 
   def isBounded(initialState: MSet[Place], depth: Int): Boolean =
-    val maxSize = maxTokenInPN(initialState)
-    val allReachedStates: Seq[Boolean] =
-      for
-        path <- petriNetRW.paths(initialState, depth)
-        state <- path
-      yield state.size <= maxSize
-    allReachedStates.forall(identity)
-
-  def isBounded2(initialState: MSet[Place], depth: Int): Boolean =
     (for
-      path: Path[Marking[Place]] <- petriNetRW.paths(initialState, depth)
+      path: Path[Marking[Place]] <- pnRW.paths(initialState, depth)
       state <- path
     yield state.size <= maxTokenInPN(initialState)).reduce(_ && _)
-  
-  @main def mainRWPetriNet =
-    //println(petriNetRW.paths(MSet(Idle, Idle, HasPermission), 4).toList.mkString("\n"))
-    println(petriNetRWWithPriority.paths(MSet(Idle, ChooseAction, HasPermission),5).toList.mkString("\n"))
+
+
+  @main def mainPNMutualExclusion =
+    println(pnRW.paths(MSet(Idle, Idle, HasPermission), 3).toList.mkString("\n"))
