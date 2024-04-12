@@ -11,8 +11,8 @@ object ExtendedRWPetriNet:
 
   export Place.*
   export scala.u06.modelling.ExtendedPetriNet.*
-  export pc.modelling.SystemAnalysis.*
-  export pc.utils.MSet
+  export u06.modelling.SystemAnalysis.*
+  export u06.utils.MSet
 
   def pnRWPriorities = ExtendedPetriNet[Place](
     MSet(*(Idle)) ~~> MSet(*(ChooseAction)),
