@@ -49,3 +49,14 @@ To test the operation of this new functionality I created a Petri net by assigni
 
 ### Colors 
 
+We want to extend the Petri net model by adding the possibility of having coloured tokens (e.g. black or red) and each transition can only accept tokens of a certain colour and when activated it changes the colour of the token it passes.
+
+To implement this new functionality I created an enum for colours and a new case class representing the pair (place, colour). 
+Again, I set a default colour value to make it possible to use the Petri net even without using colours. 
+
+To demonstrate that the behaviour is as desired, I created a Petri net having in the readers' branch all transitions with red incoming and outgoing arcs, and having in the writers' branch all transitions with black incoming and outgoing arcs.
+Only the last transition that returns the token to the beginning reverses the colour. 
+
+Thus, by calling paths with only one token in the starting place, it is possible to verify that the token alternates between the two branches, executing the readers' branch once and the writers' branch once.
+
+
