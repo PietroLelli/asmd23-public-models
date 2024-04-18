@@ -59,4 +59,46 @@ Only the last transition that returns the token to the beginning reverses the co
 
 Thus, by calling paths with only one token in the starting place, it is possible to verify that the token alternates between the two branches, executing the readers' branch once and the writers' branch once.
 
+# Lab 07 - Stochastic Modelling
+
+## Task 1 - Simulator
+In this task, I've crafted two functions to conduct analyses on the StochasticChannel.
+
+The respective code can be found here: *scala/u07/examples/StochasticChannelSimulation.scala*
+
+The primary function is designed to calculate the average time taken for communication across n runs.
+
+```
+def averageCommunicationDoneTime(nRun: Int): Double =
+  (0 to nRun).foldLeft(0.0)((z, _) => z + stocChannel.newSimulationTrace(IDLE, new Random)
+    .take(10)
+    .toList
+    .find(e => e.state == DONE).map(e => e.time).getOrElse(0.0)) / nRun
+```
+To achieve this, I run a simulation of the communication n times. For each run, we track the moment when the DONE state is reached using the foldLeft operator. Then, we aggregate all these times and calculate the average by dividing the total by the number of runs.
+
+The second function is more intricate. It determines the percentage of time during which the system remains in the FAIL state until it successfully completes the communication.
+
+```
+def relativeFailTime(nRun: Int): Double =
+  val totalTimes = (0 to nRun).foldLeft((0.0, 0.0)) ((acc, _) => {
+    val (failTime, totTime) = stocChannel.newSimulationTrace(IDLE, new Random)
+      .take(10)
+      .toList
+      .sliding(2)
+      .foldLeft((0.0, 0.0)) ( (z, s) => if (s(0).state == FAIL) (z._1 + (s(1).time - s(0).time), s(1).time) else (z._1, s(1).time))
+
+    (acc._1 + failTime, acc._2 + totTime)
+  })
+
+  totalTimes._1 / totalTimes._2
+```
+
+
+The function generates n runs. For each run, it accumulates a tuple (failTime, totalTime) by considering pairs of Event. If the current event is FAIL, it calculates the fail time by subtracting the next event time from the current one.
+Once we have the tuple (failTime, totalTime) for a single simulation, we accumulate it using an external foldLeft. 
+
+Finally, we divide the time spent in failure by the total time across all simulations to get the percentage.
+
+## Task 2 - Chemist
 
