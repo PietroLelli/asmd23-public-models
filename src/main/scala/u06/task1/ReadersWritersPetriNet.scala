@@ -26,17 +26,7 @@ object ReadersWritersPetriNet:
     (for
       p <- pnRW.paths(initialState, depth)
       s <- p
-    yield s.diff(MSet(Reading, Writing)).size != s.size - 2 && s.diff(MSet(Writing, Writing)).size != s.size - 2).reduce(_ && _)
-
-  /*val paths = pnRW.paths(initialState, depth)
-  !paths.exists { path =>
-    path.exists { state =>
-      val diffReadingWriting = state.diff(MSet(Reading, Writing)).size
-      val diffWritingWriting = state.diff(MSet(Writing, Writing)).size
-      diffReadingWriting == state.size - 2 || diffWritingWriting == state.size - 2
-    }
-  }*/
-  //pnRW.paths(initialState, depth).flatMap(p => p.filter(s => s.diff(MSet(Reading, Writing)).size == s.size - 2 || s.diff(MSet(Writing, Writing)).size == s.size - 2)).isEmpty
+    yield PetriNet.isMutuallyExclusive(s, MSet(Writing, Writing), MSet(Reading, Writing))).reduce(_ && _)
 
   def isReachable(initialState: MSet[Place], depth: Int): Boolean =
     (for
@@ -45,8 +35,7 @@ object ReadersWritersPetriNet:
       place <- state.asList
     yield place).toSet == Place.values.toSet
 
-
-  def maxTokenInPN(initialState: MSet[Place]): Int =
+  private def maxTokenInPN(initialState: MSet[Place]): Int =
     if initialState.matches(MSet(HasPermission)) then initialState.size else initialState.size + 1
 
   def isBounded(initialState: MSet[Place], depth: Int): Boolean =
@@ -55,6 +44,6 @@ object ReadersWritersPetriNet:
       state <- path
     yield state.size <= maxTokenInPN(initialState)).reduce(_ && _)
 
-
   @main def mainPNMutualExclusion =
-    println(pnRW.paths(MSet(Idle, Idle, HasPermission), 3).toList.mkString("\n"))
+    println(isMutuallyExclusive(MSet(Idle, Idle, HasPermission), 10))
+    println(pnRW.paths(MSet(Idle, Idle, HasPermission), 5).toList.mkString("\n"))
