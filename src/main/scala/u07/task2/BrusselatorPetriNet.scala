@@ -16,14 +16,14 @@ object BrusselatorPetriNet:
   export u07.modelling.SPN.*
 
   val brusselatorPetriNet = SPN[Place](
-    Trn(MSet(A), m => 1.0,   MSet(X),  MSet()),
-    Trn(MSet(X, X, Y), m => 1.0,  MSet(X, X, X),  MSet()),
-    Trn(MSet(B, X), m => 1.0,   MSet(Y, D),   MSet()),
-    Trn(MSet(X), m => 1.0,   MSet(E),   MSet(Y)))
+    Trn(MSet(A), m => 1, MSet(X, A), MSet()),
+    Trn(MSet(X, X, Y), m => m(Y), MSet(X, X, X), MSet()),
+    Trn(MSet(B, X), m => m(X)*0.5, MSet(Y, D, B), MSet()),
+    Trn(MSet(X), m => m(X)*0.5, MSet(E), MSet()))
 
   @main def main =
     val simulation = toCTMC(brusselatorPetriNet).newSimulationTrace(MSet(A,B,B,B,X,Y), new Random)
-      .take(10)
+      .take(100)
       .toList
     simulation.foreach(println)
 
@@ -34,5 +34,5 @@ object BrusselatorPetriNet:
     val chart = QuickChart.getChart("Brusselator Simulation", "Time", "Count", "X", times, xCounts)
     chart.addSeries("Y", times, yCounts)
     chart.getStyler.setLegendVisible(true)
-
+    
     new SwingWrapper[XYChart](chart).displayChart().setTitle("Brusselator Simulation")
