@@ -23,9 +23,7 @@ object BrusselatorPetriNet:
 
   @main def main =
     val simulation = toCTMC(brusselatorPetriNet).newSimulationTrace(MSet(A,B,B,B,X,Y), new Random)
-      .take(100)
-      .toList
-    simulation.foreach(println)
+      .take(500)
 
     val times = simulation.map(_._1).toArray
     val xCounts = simulation.map(_._2.countOccurrences(X)).map(_.toDouble).toArray
@@ -33,6 +31,8 @@ object BrusselatorPetriNet:
 
     val chart = QuickChart.getChart("Brusselator Simulation", "Time", "Count", "X", times, xCounts)
     chart.addSeries("Y", times, yCounts)
+
     chart.getStyler.setLegendVisible(true)
-    
+    chart.getStyler.setMarkerSize(0)
+
     new SwingWrapper[XYChart](chart).displayChart().setTitle("Brusselator Simulation")

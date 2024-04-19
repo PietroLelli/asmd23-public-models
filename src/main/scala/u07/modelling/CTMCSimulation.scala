@@ -24,3 +24,24 @@ object CTMCSimulation:
             val choice = Stochastics.draw(next)(using rnd)
             Event(t + Math.log(1 / rnd.nextDouble()) / sumR, choice)
 
+    def averageTimeToReachState(nRun: Int, initialState: S, stateToCheck: S): Double =
+      (0 to nRun).foldLeft(0.0)((z, _) => z + self.newSimulationTrace(initialState, new Random)
+        .take(10)
+        .toList
+        .find(e => e.state == stateToCheck).map(e => e.time).getOrElse(0.0)) / nRun
+
+    def relativeTimeInState(nRun: Int, initialState: S, stateToCheck: S): Double =
+      relativeTimeInCondition(nRun, initialState, _ == stateToCheck)
+
+    private def relativeTimeInCondition(nRun: Int, initialState: S, f: S => Boolean): Double =
+      val totalTimes = (0 to nRun).foldLeft((0.0, 0.0))((acc, _) => {
+        val (conditionTime, totTime) = self.newSimulationTrace(initialState, new Random)
+          .take(10)
+          .toList
+          .sliding(2)
+          .foldLeft((0.0, 0.0))((z, s) => if (f(s(0).state)) (z._1 + (s(1).time - s(0).time), s(1).time) else (z._1, s(1).time))
+
+        (acc._1 + conditionTime, acc._2 + totTime)
+      })
+
+      totalTimes._1 / totalTimes._2
