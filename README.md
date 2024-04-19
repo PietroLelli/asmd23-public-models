@@ -93,6 +93,44 @@ Once we have the tuple (failTime, totTime) for a single simulation, we accumulat
 
 Finally, we divide the time spent in failure by the total time across all simulations to get the percentage.
 
+In a second step, I extracted an API, as the task required. The relevant code is available in the following file: *src/main/scala/u07/modelling/CTMCSimulation.scala*.
+
+In a second step, I extracted an API, as the task required. The relevant code is available in the following file: *src/main/scala/u07/modelling/CTMCSimulation.scala*.
+
+I then implemented the following functions:
+```
+    def averageTimeToReachState(nRun: Int, initialState: S, stateToCheck: S): Double =
+      (0 to nRun).foldLeft(0.0)((z, _) => z + self.newSimulationTrace(initialState, new Random)
+        .take(10)
+        .toList
+        .find(e => e.state == stateToCheck).map(e => e.time).getOrElse(0.0)) / nRun
+```
+
+```
+ def relativeTimeInState(nRun: Int, initialState: S, stateToCheck: S): Double =
+      relativeTimeInCondition(nRun, initialState, _ == stateToCheck)
+
+    private def relativeTimeInCondition(nRun: Int, initialState: S, f: S => Boolean): Double =
+      val totalTimes = (0 to nRun).foldLeft((0.0, 0.0))((acc, _) => {
+        val (conditionTime, totTime) = self.newSimulationTrace(initialState, new Random)
+          .take(10)
+          .toList
+          .sliding(2)
+          .foldLeft((0.0, 0.0))((z, s) => if (f(s(0).state)) (z._1 + (s(1).time - s(0).time), s(1).time) else (z._1, s(1).time))
+
+        (acc._1 + conditionTime, acc._2 + totTime)
+      })
+      totalTimes._1 / totalTimes._2
+```
+
+
 ## Task 2 - Chemist
+SPNs can be used to simulate dynamics of chemical reactions. Experiment with it. E.g.: search the “Brussellator” chemical
+reaction on wikipedia: it oscillates! Try to reproduce it.
+
+To complete this task, I implemented a Petri net by modelling chemical reactions as transitions. I then modified the rates of the transitions to obtain the desired oscillations.
+
+I then printed out the oscillations of X and Y obtained from the simulation in a graph, shown below.
+
 ![](resources/simulation.png)
 
