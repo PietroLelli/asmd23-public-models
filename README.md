@@ -130,6 +130,23 @@ reaction on wikipedia: it oscillates! Try to reproduce it.
 
 To complete this task, I implemented a Petri net by modelling chemical reactions as transitions. I then modified the rates of the transitions to obtain the desired oscillations.
 
+In order to simulate chemical reactions, I modified the transitions so that the reactants (A and B) never ended. In particular, every time A is consumed, it is immediately added back. Same with the transitions using B. 
+
+This makes it possible to run simulations of the desired length without worrying about the reactants.
+
+```
+enum Place:
+    case A, B, D, E, X, Y
+
+val brusselatorPetriNet = SPN[Place](
+    Trn(MSet(A), m => 1, MSet(X, A), MSet()),
+    Trn(MSet(X, X, Y), m => m(Y), MSet(X, X, X), MSet()),
+    Trn(MSet(B, X), m => m(X) * 0.5, MSet(Y, D, B), MSet()),
+    Trn(MSet(X), m => m(X) * 0.5, MSet(E), MSet()))
+```
+
+The complete code is available in the following file: *src/main/scala/u07/task2/BrusselatorPetriNet.scala*.
+
 I then printed out the oscillations of X and Y obtained from the simulation in a graph, shown below.
 
 ![](resources/simulation.png)
