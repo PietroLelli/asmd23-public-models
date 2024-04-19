@@ -94,4 +94,5 @@ Once we have the tuple (failTime, totTime) for a single simulation, we accumulat
 Finally, we divide the time spent in failure by the total time across all simulations to get the percentage.
 
 ## Task 2 - Chemist
+![](resources/simulation.png)
 
