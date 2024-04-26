@@ -170,3 +170,69 @@ I then printed out the oscillations of X and Y obtained from the simulation in a
 
 ![](resources/simulation.png)
 
+# Lab 08 - Stochastic Analysis
+## Task 1 - PRISM
+- Make the stochastic Readers & Writers Petri Net seen in lesson work: perform experiments to investigate the probability
+that something good happens within a bound.
+- Play with PRISM configuration to inspect steady-state proabilities of reading and writing (may need to play with options
+anche choose “linear equations method”).
+
+To complete this task, I used PRISM to check some properties of the stochastic Readers and Writers petri net.
+
+Below is the model code:
+
+```
+ctmc
+const int N = 20;
+module RW
+p1 : [0..N] init N;
+p2 : [0..N] init 0;
+p3 : [0..N] init 0;
+p4 : [0..N] init 0;
+p5 : [0..N] init 1;
+p6 : [0..N] init 0;
+p7 : [0..N] init 0;
+[t1] p1>0 & p2<N -> 1 : (p1'=p1-1)&(p2'=p2+1);
+[t2] p2>0 & p3<N -> 200000 : (p2'=p2-1) & (p3'=p3+1);
+[t3] p2>0 & p4<N -> 100000 : (p2'=p2-1) & (p4'=p4+1);
+[t4] p3>0 & p5>0 & p6<N -> 100000 : (p3'=p3-1) & (p6'=p6+1);
+[t5] p4>0 & p5>0 & p6=0 & p7<N -> 100000 : (p4'=p4-1) & (p5'=p5-1) & (p7'=p7+1);
+[t6] p6>0 & p1<N -> p6*1 : (p6'=p6-1) & (p1'=p1+1);
+[t7] p7>0 & p5<N & p1<N -> 0.5 : (p7'=p7-1) & (p1'=p1+1) & (p5'=p5+1);
+endmodule
+```
+
+Initially, I tried to find the probability that at least one token reaches the read state (p6) within k time steps.
+
+```
+P=? [ (true) U<=k (p6>0) ]
+```
+
+Result:
+
+![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/1f1b625f-53c5-4be1-a3ec-68295dd63192)
+
+Next I tried to find the probability that at least one token reaches the write state within k time steps.
+
+```
+P=? [ (true) U<=k (p7>0) ]
+```
+
+Result:
+
+![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/ac9ca061-d0f9-4fa3-bd85-b0b6b87832cd)
+
+
+Finally I checked that the mutual exclusion property was not violated, thus checking that there were no readers and writers at the same time.
+
+```
+P=? [ (true) U<=k (p6>0)&(p7>0) ]
+```
+
+Result:
+
+![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/447c13ad-a12c-4a72-8552-6d051045166b)
+
+
+
+
