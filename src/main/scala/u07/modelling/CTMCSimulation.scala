@@ -33,7 +33,7 @@ object CTMCSimulation:
     def relativeTimeInState(nRun: Int, initialState: S, stateToCheck: S): Double =
       relativeTimeInCondition(nRun, initialState, _ == stateToCheck)
 
-    private def relativeTimeInCondition(nRun: Int, initialState: S, f: S => Boolean): Double =
+    def relativeTimeInCondition(nRun: Int, initialState: S, f: S => Boolean): Double =
       val totalTimes = (0 to nRun).foldLeft((0.0, 0.0))((acc, _) => {
         val (conditionTime, totTime) = self.newSimulationTrace(initialState, new Random)
           .take(10)

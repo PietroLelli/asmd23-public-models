@@ -1,4 +1,4 @@
-package scala.u07.task2
+package scala.u07.task3
 
 import u07.modelling.SPN
 import u07.utils.MSet
