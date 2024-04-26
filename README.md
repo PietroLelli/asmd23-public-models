@@ -123,8 +123,27 @@ I then implemented the following functions:
       totalTimes._1 / totalTimes._2
 ```
 
+## Task 2 - Guru
+Check the SPN module, that incorporates the ability of CTMC modelling on top of Petri Nets, leading to Stochastic Petri
+Nets. Code and simulate Stochastic Readers & Writers shown in previous lesson. Try to study how key parameters/rate
+influence average time the system is in read or write state.
 
-## Task 2 - Chemist
+To complete this task, I implemented a stochastic Readers and writers petri net. The relevant code is available at: *src/main/scala/u07/task2/RWStochasticPetriNet.scala*
+```
+  val stochasticRWPetriNet = SPN[Place](
+    Trn(MSet(Idle), m => 1.0, MSet(ChooseAction), MSet()),
+    Trn(MSet(ChooseAction), m => 200000, MSet(ReadyToRead), MSet()),
+    Trn(MSet(ChooseAction), m => 100000, MSet(ReadyToWrite), MSet()),
+    Trn(MSet(ReadyToRead, HasPermission), m => 100000, MSet(Reading, HasPermission), MSet()),
+    Trn(MSet(Reading), m => 0.1 * m(Reading), MSet(Idle), MSet()),
+    Trn(MSet(ReadyToWrite, HasPermission), m => 100000, MSet(Writing), MSet(Reading)),
+    Trn(MSet(Writing), m => 0.2, MSet(Idle, HasPermission), MSet())
+  )
+```
+After implementing the petri net, I used the previously developed API to calculate the percentage of time the petri net spends in a given state (read, write and neither of the previous two states).
+
+
+## Task 3 - Chemist
 SPNs can be used to simulate dynamics of chemical reactions. Experiment with it. E.g.: search the “Brussellator” chemical
 reaction on wikipedia: it oscillates! Try to reproduce it.
 
@@ -145,7 +164,7 @@ val brusselatorPetriNet = SPN[Place](
     Trn(MSet(X), m => m(X) * 0.5, MSet(E), MSet()))
 ```
 
-The complete code is available in the following file: *src/main/scala/u07/task2/BrusselatorPetriNet.scala*.
+The complete code is available in the following file: *src/main/scala/u07/task3/BrusselatorPetriNet.scala*.
 
 I then printed out the oscillations of X and Y obtained from the simulation in a graph, shown below.
 
