@@ -234,5 +234,61 @@ Result:
 ![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/447c13ad-a12c-4a72-8552-6d051045166b)
 
 
+# Lab 09 - Reinforcement Learning
+## Task 01 - BASIC-Q-LEARNING
+- Get acquainted with the basic tool of Q-learning, focussing on examples/TryQLearningMatrix
+- Check how variation of key parameters (epsilon, gamma, alpha, episode length) affects learning
+- Check how learning gets more difficult as the grid size increases
 
+The parameters considerated are the following:
+
+- Gamma: This parameter influences the significance of future rewards.
+- Alpha: This regulates the balance between existing knowledge and new information.
+- Epsilon: This determines the exploration tendency; higher values result in more exploratory behavior.
+- Episodes: The number of training iterations for the agent.
+- Grid size: The dimensions of the "map," impacting the learning complexity.
+
+### First configuration
+**Parameters:**
+
+- gamma = 0.9
+
+- alpha = 0.5
+
+- epsilon = 0.3
+
+**Policy learned:**
+
+![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/c45b52d3-81cb-4377-a0c8-e58e8f0c0535)
+
+**V-Table:**
+
+![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/d8ec3dd1-59ae-4111-b9e5-97f0ebcd44b2)
+
+
+### Second configuration
+**Parameters:**
+
+- gamma = 0.8
+
+- alpha = 0.5
+
+- epsilon = 0.3
+
+**Policy learned:**
+
+![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/64f4bd24-a2b2-4cef-991e-0a3b112ee4f6)
+
+**V-Table:**
+
+![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/eef97497-3155-4d97-b83e-76a7456d04d1)
+
+In this configuration I tried to decrease gamma from 0.9 to 0.8.
+
+Previously, since gamma was very high, the policy tended to reach the jump with the higher reward despite being further away.
+In this case, however, even though I have only lowered gamma by 0.1 we notice that the policy also starts to consider the jump with the lowest reward if we are close to it.
+
+By lowering the gamma value even more (gamma = 0.1), the optimal policy does not change, but the values of the V-Table become much lower, as shown in the images below.
+
+![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/32971451-b164-4f36-90af-2a83db18d548)
 
