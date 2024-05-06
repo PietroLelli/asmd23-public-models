@@ -242,11 +242,11 @@ Result:
 
 The parameters considerated are the following:
 
-- Gamma: This parameter influences the significance of future rewards.
-- Alpha: This regulates the balance between existing knowledge and new information.
-- Epsilon: This determines the exploration tendency; higher values result in more exploratory behavior.
-- Episodes: The number of training iterations for the agent.
-- Grid size: The dimensions of the "map," impacting the learning complexity.
+- `Gamma:` This parameter influences the significance of future rewards.
+- `Alpha:` This regulates the balance between existing knowledge and new information.
+- `Epsilon:` This determines the exploration tendency; higher values result in more exploratory behavior.
+- `Episodes:` The number of training iterations for the agent.
+- `Grid size:` The dimensions of the "map," impacting the learning complexity.
 
 ### First configuration
 
