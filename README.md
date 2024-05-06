@@ -249,6 +249,7 @@ The parameters considerated are the following:
 - Grid size: The dimensions of the "map," impacting the learning complexity.
 
 ### First configuration
+
 **Parameters:**
 
 - gamma = 0.9
@@ -256,6 +257,10 @@ The parameters considerated are the following:
 - alpha = 0.5
 
 - epsilon = 0.3
+
+- grid size = 5x5
+
+- episodes: 10000
 
 **Policy learned:**
 
@@ -267,6 +272,7 @@ The parameters considerated are the following:
 
 
 ### Second configuration
+
 **Parameters:**
 
 - gamma = 0.8
@@ -274,6 +280,11 @@ The parameters considerated are the following:
 - alpha = 0.5
 
 - epsilon = 0.3
+
+- grid size = 5x5
+
+- episodes: 10000
+
 
 **Policy learned:**
 
@@ -292,3 +303,80 @@ By lowering the gamma value even more (gamma = 0.1), the optimal policy does not
 
 ![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/32971451-b164-4f36-90af-2a83db18d548)
 
+### Third configuration
+
+**Parameters:**
+
+- gamma = 0.9
+
+- alpha = 0.5
+
+- epsilon = 0.3
+
+- grid size = 5x5
+
+- episodes: 500
+
+
+**Policy learned:**
+
+![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/1f6f43fb-1255-4d93-bdc9-9a3d8a1396f6)
+
+
+**V-Table:**
+
+![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/e47a5a1c-a5f2-4331-9f19-5f8b07fb98b0)
+
+
+In this configuration I have significantly decreased the number of episodes used for the learning phase, we can see that the learned policy is less precise.
+
+
+### Fourth configuration
+
+With the following configurations I tried to analyse how the policy and v-table changes when the epsilon parameter is changed.
+To do this I increased the grid size because I noticed that with the previous grid size the changes were not significant.
+
+**Parameters:**
+
+- gamma = 0.8
+
+- alpha = 0.5
+
+- epsilon = 0.3
+
+- grid size = 8x8
+
+
+**Policy learned:**
+
+![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/8d5fe255-e8c7-4b4e-92a9-c10086632c6f)
+
+**V-Table:**
+
+![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/b5a62e3d-59c5-49e5-97c5-8ec0e064d052)
+
+In this case, as epsilon has a low value, moving away from the starting position the policy is not optimal because the agent tends not to explore the furthest areas.
+
+### Fifth configuration
+
+**Parameters:**
+
+- gamma = 0.8
+
+- alpha = 0.5
+
+- epsilon = 0.9
+
+- grid size = 8x8
+
+
+**Policy learned:**
+
+![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/fb25ef75-ebdb-4050-b38f-4787fad574ea)
+
+
+**V-Table:**
+
+![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/7b6fb8ae-4841-49e3-8d46-13ff616eba59)
+
+In this case, however, I have set the value of epsilon to 0.9. as epsilon has a very high value, the agent will also explore the more distant areas and therefore the policy will also be correct in these areas.
