@@ -3,6 +3,11 @@ package u09.model
 import u09.utils.Stochastics.{cumulative, draw}
 import u09.utils.Stochastics
 
+import scala.u09.task2.ExtendedQMatrix.Facade
+
+trait ResetFunction:
+  def execute(): Unit
+
 trait QRL:
   type State
   type Action
@@ -28,12 +33,14 @@ trait QRL:
     def initial: State
     def terminal: State => Boolean
     def run(p: Policy): LazyList[(Action, State)]
+    def resetFunction: ResetFunction
 
   // an updatable, table-oriented QFunction, to optimise selection over certain actions
   trait Q extends ((State, Action) => Reward):
     def actions: Set[Action]
     def update(s: State, a: Action, v: Reward): Q
-    def bestPolicy: Policy = s => actions.maxBy(this(s, _))
+    def bestPolicy: Policy =
+      s => actions.maxBy(this(s, _))
     def epsPolicy(f: Probability): Policy = _ match
       case _ if Stochastics.drawFiltered(_ < f) => Stochastics.uniformDraw(actions)
       case s => bestPolicy(s)
