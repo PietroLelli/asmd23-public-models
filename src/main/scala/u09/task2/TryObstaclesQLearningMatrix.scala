@@ -4,7 +4,7 @@ object TryObstaclesQLearningMatrix extends App:
 
   import scala.u09.task2.ExtendedQMatrix.Move.*
   import scala.u09.task2.ExtendedQMatrix.*
-  val mapObstacles = Set((3,1), (5,1), (7,1))
+  val mapObstacles = Set((3,1), (5,0), (7,2))
 
   val rlObstacles: ExtendedQMatrix.Facade = Facade(
     width = 10,
@@ -28,7 +28,14 @@ object TryObstaclesQLearningMatrix extends App:
   rlObstacles.resetMap = () => rlObstacles.enemyMoves = List.empty
 
   val q0 = rlObstacles.qFunction
-  println(rlObstacles.show(q0.vFunction,"%2.2f"))
   val q1 = rlObstacles.makeLearningInstance().learn(10000,100,q0)
   println(rlObstacles.show(q1.vFunction,"%2.2f"))
-  println(rlObstacles.show(s => if rlObstacles.obstacles.contains(s) then "*" else q1.bestPolicy(s).toString,"%7s"))
+  println(rlObstacles.show(s => if rlObstacles.obstacles.contains(s) then "X" else q1.bestPolicy(s).toString,"%7s"))
+
+  val agentPath = rlObstacles.qSystem.run(q1.bestPolicy).take(30)
+  agentPath.toList.zipWithIndex.map {
+    case ((e1, e2), index) => (e1, if (index == 0) e2 else agentPath(index - 1)._2)
+  }
+  println(rlObstacles.show(s => {
+    if rlObstacles.obstacles.contains(s) then "X" else if s == rlObstacles.initial then agentPath.head._1 else agentPath.find((ac, st) => st == s).map((ac, st) => ac).getOrElse(".")
+  }, "%7s"))

@@ -25,7 +25,7 @@ object TryItemsQLearningMatrix extends App:
     case (s, a) if items.contains(s) =>
       items = items - s
       (totalItems.size - items.size + 1) * 20
-    case ((x,y), a)  if (x == 0 && a == LEFT) || (x == rlItems.width-1 && a == RIGHT) || (y == 0 && a == UP) || (y == rlItems.height-1 && a == DOWN) => -10
+    case ((x,y), a)  if (x == 0 && a == LEFT) || (x == rlItems.width-1 && a == RIGHT) || (y == 0 && a == UP) || (y == rlItems.height-1 && a == DOWN) => -50
     case _ => 0
   }
 
@@ -41,3 +41,10 @@ object TryItemsQLearningMatrix extends App:
   println(rlItems.show(s => if rlItems.itemsToCollect.contains(s) then "$" else q1.bestPolicy(s).toString, "%7s"))
 
   val agentPath = rlItems.qSystem.run(q1.bestPolicy).take(30)
+  agentPath.toList.zipWithIndex.map {
+    case((e1, e2), index) => (e1, if(index == 0) e2 else agentPath(index-1)._2)
+  }
+
+  println(rlItems.show(s => {
+    if rlItems.itemsToCollect.contains(s) then "$" else if s == rlItems.initial then agentPath.head._1 else agentPath.find((ac, st) => st == s).map((ac, st) => ac).getOrElse(".")
+  },"%7s"))

@@ -9,7 +9,7 @@ object TryEnemyQLearningMatrix extends App:
   val rlEnemy: ExtendedQMatrix.Facade = Facade(
     width = 10,
     height = 10,
-    initial = (0,1),
+    initial = (0,4),
     terminal = {case _=>false},
     jumps = { PartialFunction.empty },
     obstacles = Set.empty,
@@ -26,7 +26,7 @@ object TryEnemyQLearningMatrix extends App:
     case ((9, 4), _) => 10
     case _ => 0}
 
-  rlEnemy.resetMap = () => {rlEnemy.enemy = (rlEnemy.width-2, rlEnemy.height-2); rlEnemy.enemyMoves = List.empty}
+  rlEnemy.resetMap = () => {rlEnemy.enemy = (rlEnemy.width/2, rlEnemy.height/2+1); rlEnemy.enemyMoves = List.empty; rlEnemy.patrolPattern = LazyList.continually(List(LEFT, LEFT, UP, UP, RIGHT, RIGHT, DOWN, DOWN)).flatten}
 
   val q0 = rlEnemy.qFunction
   println(rlEnemy.show(q0.vFunction,"%2.2f"))

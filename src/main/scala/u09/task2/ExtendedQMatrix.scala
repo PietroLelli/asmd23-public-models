@@ -29,13 +29,19 @@ object ExtendedQMatrix:
     type Action = Move
     type Enemy = Node
     var reward: PartialFunction[(Node, Move), Double] = null
-    var enemy: Enemy = (width-2, height-2)
+    var enemy: Enemy = (width/2, height/2)
     var resetMap: ResetFunction = () => ()
 
     var enemyMoves: List[State] = List.empty[State]
 
     private def getRandomAction: Action =
       Move.values.toList(util.Random.nextInt(Move.values.length))
+    
+    var patrolPattern: LazyList[Action] = LazyList.continually(List(LEFT, LEFT, UP, UP, RIGHT, RIGHT, DOWN, DOWN)).flatten
+    private def getPatrolAction: Action =
+      val head = patrolPattern.head
+      patrolPattern = patrolPattern.tail
+      head
 
     def getNeighbors(n: Node, radius: Int): List[Node] = 
       val neighbors = for 
@@ -55,7 +61,7 @@ object ExtendedQMatrix:
     def qEnvironment(): Environment = (s: Node, a: Move) =>
       val n2: Node = move(s, a)
       enemyMoves = enemyMoves :+ enemy
-      enemy = move(enemy, getRandomAction)
+      enemy = move(enemy, getPatrolAction)
       // computes rewards, and possibly a jump
       (reward.apply((s, a)), jumps.orElse[(Node, Move), Node](_ => n2)(s, a))
 
