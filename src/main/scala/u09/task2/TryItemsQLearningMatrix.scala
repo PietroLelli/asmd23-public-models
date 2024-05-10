@@ -17,7 +17,6 @@ object TryItemsQLearningMatrix extends App:
     gamma = 0.9, //Future reward importance
     alpha = 0.2, //Past knowledge importance
     epsilon = 0.8, //Exploration factor
-    resetMap = () => {items = items ++ totalItems;},
     v0 = 1
   )
 
@@ -25,15 +24,20 @@ object TryItemsQLearningMatrix extends App:
     case (s, a) if totalItems.contains(s) && !items.contains(s) => (totalItems.size - items.size + 1) * -4
     case (s, a) if items.contains(s) =>
       items = items - s
-      (totalItems.size - items.size + 1) * 22
+      (totalItems.size - items.size + 1) * 20
     case ((x,y), a)  if (x == 0 && a == LEFT) || (x == rlItems.width-1 && a == RIGHT) || (y == 0 && a == UP) || (y == rlItems.height-1 && a == DOWN) => -10
     case _ => 0
   }
 
+  rlItems.resetMap = () => {
+    items = items ++ totalItems;
+    rlItems.enemyMoves = List.empty
+  }
+
   val q0 = rlItems.qFunction
   println(rlItems.show(q0.vFunction, "%2.2f"))
-  val q1 = rlItems.makeLearningInstance().learn(100000, 100, q0)
+  val q1 = rlItems.makeLearningInstance().learn(10000, 100, q0)
   println(rlItems.show(q1.vFunction, "%2.2f"))
   println(rlItems.show(s => if rlItems.itemsToCollect.contains(s) then "$" else q1.bestPolicy(s).toString, "%7s"))
 
-  rlItems.qSystem.run(q1.bestPolicy).take(30).foreach(println)
+  val agentPath = rlItems.qSystem.run(q1.bestPolicy).take(30)
