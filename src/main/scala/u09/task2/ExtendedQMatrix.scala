@@ -29,7 +29,7 @@ object ExtendedQMatrix:
     type Action = Move
     type Enemy = Node
     var reward: PartialFunction[(Node, Move), Double] = null
-    var enemy: Enemy = (width/2, height/2)
+    var enemy: Enemy = (width/2, height/2+1)
     var resetMap: ResetFunction = () => ()
 
     var enemyMoves: List[State] = List.empty[State]

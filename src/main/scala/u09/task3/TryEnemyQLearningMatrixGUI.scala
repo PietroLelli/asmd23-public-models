@@ -75,12 +75,12 @@ object TryEnemyQLearningMatrixGUI extends SimpleSwingApplication {
 
       val nextAgentPos = agentPathList(agentPathIndex)
       //updateCell(agentPos._1, agentPos._2, ".")
-      updateCell(nextAgentPos._1, nextAgentPos._2, "A")
+      updateCell(nextAgentPos._1, nextAgentPos._2, "(°-°)")
       agentPos = (nextAgentPos._1, nextAgentPos._2)
 
       val nextEnemyPos = enemyPathList(agentPathIndex)
       updateCell(enemyPos._1, enemyPos._2, ".")
-      updateCell(nextEnemyPos._1, nextEnemyPos._2, "E")
+      updateCell(nextEnemyPos._1, nextEnemyPos._2, "X")
       enemyPos = (nextEnemyPos._1, nextEnemyPos._2)
 
       if (agentPathIndex == agentPathList.length - 1)
@@ -90,8 +90,8 @@ object TryEnemyQLearningMatrixGUI extends SimpleSwingApplication {
       val index = y * rlEnemy.width + x
       gridPanel.contents(index).asInstanceOf[Label].text = content
 
-    updateCell(agentPos._1, agentPos._2, "A")
-    updateCell(enemyPos._1, enemyPos._2, "E")
+    updateCell(agentPos._1, agentPos._2, "(°-°)")
+    updateCell(enemyPos._1, enemyPos._2, "X")
   }
 }
 
