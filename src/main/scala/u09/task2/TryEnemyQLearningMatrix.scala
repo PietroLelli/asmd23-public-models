@@ -1,4 +1,4 @@
-package scala.u09.task3
+package scala.u09.task2
 
 import scala.u09.task2.ExtendedQMatrix
 import scala.u09.task2.ExtendedQMatrix.*

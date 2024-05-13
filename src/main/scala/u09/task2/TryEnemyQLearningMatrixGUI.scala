@@ -1,12 +1,12 @@
-package scala.u09.task3
+package scala.u09.task2
 
 import java.awt.event.{ActionEvent, ActionListener}
 import javax.swing.{SwingUtilities, Timer}
+import scala.swing.*
+import scala.swing.event.ButtonClicked
 import scala.u09.task2.ExtendedQMatrix
 import scala.u09.task2.ExtendedQMatrix.*
 import scala.u09.task2.ExtendedQMatrix.Move.*
-import scala.swing.*
-import scala.swing.event.ButtonClicked
 
 object TryEnemyQLearningMatrixGUI extends SimpleSwingApplication {
 
