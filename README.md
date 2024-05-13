@@ -444,6 +444,23 @@ This image shows an execution:
 ![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/6bab0077-0f6c-4067-98aa-e5bc8d280c26)
 
 ## Enemies
+In this case, the goal is for the agent to learn how to reach a goal in the map while avoiding an enemy moving in a map area.
+
+The corresponding code can be found at the following location:
+scala.u09.task2.TryEnemyQLearningMatrix.scala
+
+First of all, we extended the implementation of the ExtendedQMatrix by adding the concept of an enemy.
+In our case the enemy is represented by a node (Int, Int) containing its coordinates.
+
+For the rewards I have assigned a positive reward if the agent manages to reach the goal from the opposite side of the map, while a negative reward is assigned if the agent tries to leave the boundaries of the map or gets too close to the enemy (i.e. if he enters a cell at distance 1 from the enemy).
+
+I implemented a method to make the enemy move in a given area by following this pattern:
+```scala
+var patrolPattern: LazyList[Action] = LazyList.continuously(List(LEFT, LEFT, UP, UP, RIGHT, RIGHT, DOWN, DOWN)).flatten
+```
+We then used the resetMap() function to reset the initial position of the enemy after each learning episode.
+
+
 This image shows the optimal policy learned, circled in red is the enemy's movement zone:
 
 ![Screenshot 2024-05-13 114641](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/022592f7-ee41-4e7f-8294-fe9f1e6f7235)
@@ -454,6 +471,9 @@ This image shows an execution:
 ![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/1ebb2306-26c2-4ba0-a2f3-4c48be85f683)
 
 ### GUI
-
+To complete this task, I also made a GUI version, which allows you to visualise the movements of the agent and the enemy in two ways:
+- one step at a time, by clicking the Move button
+- running the whole run, by clicking Run, in which case a step will be executed every 500 milliseconds
+  
 ![executionGIF](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/d62d3729-c60e-4da2-af09-f76485f61534)
 
