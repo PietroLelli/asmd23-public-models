@@ -409,10 +409,12 @@ Once learnt the optimal policy is able to circumvent obstacles.
 The agent starts its journey from (0,1) and aims to arrive at (9,1), with obstacles noted as `[]`:
 
 This image shows the optimal policy learned:
-IMAGE
+
+![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/23f24a53-d55a-49a8-8676-07ac438072eb)
 
 This image shows an execution:
-IMAGE
+
+![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/12fbe2be-3b35-471f-b4e8-0e801ec61185)
 
 ## Items
 
@@ -431,8 +433,12 @@ To solve these problems, I have done the following:
 
 - After the agent has collected an item, the item is removed and a negative reward is given if he tries to return to that cell.
 
+The agent starts its journey from (0,1) and aims to collect all items, denoted as `$`:
+
 This image shows the optimal policy learned:
-IMAGE
+
+![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/2968b85a-9045-4224-9eae-fc97cbdf3456)
 
 This image shows an execution:
-IMAGE
+
+![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/6bab0077-0f6c-4067-98aa-e5bc8d280c26)
