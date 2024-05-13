@@ -442,3 +442,18 @@ This image shows the optimal policy learned:
 This image shows an execution:
 
 ![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/6bab0077-0f6c-4067-98aa-e5bc8d280c26)
+
+## Enemies
+This image shows the optimal policy learned, circled in red is the enemy's movement zone:
+
+![Screenshot 2024-05-13 114641](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/022592f7-ee41-4e7f-8294-fe9f1e6f7235)
+
+
+This image shows an execution:
+
+![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/1ebb2306-26c2-4ba0-a2f3-4c48be85f683)
+
+### GUI
+
+![executionGIF](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/d62d3729-c60e-4da2-af09-f76485f61534)
+
