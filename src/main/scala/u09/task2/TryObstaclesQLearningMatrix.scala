@@ -30,12 +30,12 @@ object TryObstaclesQLearningMatrix extends App:
   val q0 = rlObstacles.qFunction
   val q1 = rlObstacles.makeLearningInstance().learn(10000,100,q0)
   println(rlObstacles.show(q1.vFunction,"%2.2f"))
-  println(rlObstacles.show(s => if rlObstacles.obstacles.contains(s) then "X" else q1.bestPolicy(s).toString,"%7s"))
+  println(rlObstacles.show(s => if rlObstacles.obstacles.contains(s) then "[]" else q1.bestPolicy(s).toString,"%7s"))
 
   val agentPath = rlObstacles.qSystem.run(q1.bestPolicy).take(30)
   agentPath.toList.zipWithIndex.map {
     case ((e1, e2), index) => (e1, if (index == 0) e2 else agentPath(index - 1)._2)
   }
   println(rlObstacles.show(s => {
-    if rlObstacles.obstacles.contains(s) then "X" else if s == rlObstacles.initial then agentPath.head._1 else agentPath.find((ac, st) => st == s).map((ac, st) => ac).getOrElse(".")
+    if rlObstacles.obstacles.contains(s) then "[]" else if s == rlObstacles.initial then agentPath.head._1 else agentPath.find((ac, st) => st == s).map((ac, st) => ac).getOrElse(".")
   }, "%7s"))

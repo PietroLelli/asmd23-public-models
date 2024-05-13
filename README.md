@@ -380,3 +380,59 @@ In this case, as epsilon has a low value, moving away from the starting position
 ![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/7b6fb8ae-4841-49e3-8d46-13ff616eba59)
 
 In this case, however, I have set the value of epsilon to 0.9. as epsilon has a very high value, the agent will also explore the more distant areas and therefore the policy will also be correct in these areas.
+
+## Task 02 - DESIGN-BY-Q-LEARNING
+Changing enviroment, state, rewards (and adding jumps, holes, items, enemies, walls, moving obstacles) you can really make your “robot” learn virtually anything, e.g.:
+
+- define an environment as a sort of corridor with obstacles: your robot has to “zigzag walk” to avoid them.
+- “program by learning” a robot to collect items one at a time and go back to inital position.
+- “program by learning” a robot to move obstacles so as to hide from enemies.
+
+## Task 2 - Design by Q-Learning
+To complete this task, I created a class that extends QMatrix, the corresponding code is available at the following location: *scala.u09.task2.ExtendedQMatrix.scala*.
+
+### Obstacles
+In this case, the objective is to construct a corridor and guide an agent from the leftmost point to the rightmost point, carefully avoiding the **obstacles** located in the middle.
+
+The corresponding code is available at the following location: *scale.u09.task2.TryObstaclesQLearningMatrix.scale*.
+
+This is achieved through the following steps:
+
+- Initially, the target cell on the map is assigned the highest reward to guide the agent in the right direction.
+
+- Next, it is imperative to ensure that the agent stays within the boundaries of the map; therefore, negative rewards are assigned for boundary violation attempts.
+
+- Next, a new parameter is introduced to manage the positions of obstacles and negative rewards are assigned when the agent moves into a cell occupied by an obstacle.
+
+Once learnt the optimal policy is able to circumvent obstacles.
+
+The agent starts its journey from (0,1) and aims to arrive at (9,1), with obstacles noted as `[]`:
+
+This image shows the optimal policy learned:
+IMAGE
+
+This image shows an execution:
+IMAGE
+
+## Items
+
+In this case we want the agent to collect items and stay where the final item is.
+
+In this case we have the problem that the rewards are not static, we are in a situation where when an item has not yet been collected
+the cell has a high expected reward, but the same cell must have less importance after the item has been collected.
+
+Furthermore, after each episode, we need a way to return the map to the initial configuration of the items.
+
+To solve these problems, I have done the following:
+
+- The `ResetFunction` type is created, which consists of a `Unit` function which is called before each training episode and resets the map (relocating the items).
+
+- To incentive the agent to go ahead and collect the next items I chose to use an incremental reward for each item, depending on the number of items already collected by the agent (first item = 10, second item = 20, third item = 30).
+
+- After the agent has collected an item, the item is removed and a negative reward is given if he tries to return to that cell.
+
+This image shows the optimal policy learned:
+IMAGE
+
+This image shows an execution:
+IMAGE
