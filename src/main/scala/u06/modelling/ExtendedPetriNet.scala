@@ -8,16 +8,11 @@ import scala.collection.immutable.Set
 import scala.math.Ordering
 
 object ExtendedPetriNet:
-  enum Color:
-    case Black, Red
-
-  @targetName("Token")
-  case class *[P](place: P, color: Color = Color.Black)
-
+  
   // pre-conditions, effects, inhibition, priority
-  case class Trn[P](cond: MSet[*[P]], eff: MSet[*[P]], inh: MSet[*[P]], priority: Int = 1)
+  case class Trn[P](cond: MSet[P], eff: MSet[P], inh: MSet[P], priority: Int = 1)
   type ExtendedPetriNet[P] = Set[Trn[P]]
-  type Marking[P] = MSet[*[P]]
+  type Marking[P] = MSet[P]
 
   // factory of A Petri Net
   def apply[P](transitions: Trn[P]*): ExtendedPetriNet[P] = transitions.toSet
