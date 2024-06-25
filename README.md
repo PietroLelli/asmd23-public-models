@@ -23,7 +23,7 @@ Create a variation/extension of PetriNet meta-model, with priorities: each trans
 fire if one with higher priority can fire. Show an example that your pretty new “abstraction” works as expected. Another interesting extension
 is “coloring”: tokens have a value attached, and this is read/updated by transitions.
 
-To complete this task, I created an extension of the Petri net, adding priorities and colours.
+To complete this task, I created an extension of the Petri net adding priorities.
 
 The respective code is available at *src/main/scala/u06/task2/ExtendedRWPetriNet.scala* and *src/main/scala/u06/modelling/ExtendedPetriNet.scala*.
 
