@@ -400,9 +400,6 @@ This image shows the optimal policy learned:
 
 ![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/23f24a53-d55a-49a8-8676-07ac438072eb)
 
-This image shows an execution:
-
-![image](https://github.com/PietroLelli/asmd23-public-models/assets/73821770/12fbe2be-3b35-471f-b4e8-0e801ec61185)
 
 ## Items
 
